@@ -9,6 +9,7 @@ const eventMap = {
   adLoaded: 'interstitialAdLoaded',
   adFailedToLoad: 'interstitialAdFailedToLoad',
   adOpened: 'interstitialAdOpened',
+  adFailedToOpen: 'interstitialAdFailedToOpen',
   adClosed: 'interstitialAdClosed',
 };
 
@@ -18,7 +19,7 @@ const addEventListener = (event, handler) => {
   const mappedEvent = eventMap[event];
   if (mappedEvent) {
     let listener;
-    if (event === 'adFailedToLoad') {
+    if (event === 'adFailedToLoad' || event === 'adFailedToOpen') {
       listener = eventEmitter.addListener(mappedEvent, (error) =>
         handler(createErrorFromErrorData(error))
       );

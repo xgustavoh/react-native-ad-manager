@@ -42,6 +42,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
     public static final String EVENT_AD_LOADED = "interstitialAdLoaded";
     public static final String EVENT_AD_FAILED_TO_LOAD = "interstitialAdFailedToLoad";
     public static final String EVENT_AD_OPENED = "interstitialAdOpened";
+    public static final String EVENT_AD_FAILED_TO_OPEN = "interstitialAdFailedToOpen";
     public static final String EVENT_AD_CLOSED = "interstitialAdClosed";
 
     AdManagerInterstitialAd mInterstitialAd;
@@ -280,16 +281,19 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                             new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
-
+                                    sendEvent(EVENT_AD_CLOSED, null);
                                 }
 
                                 @Override
                                 public void onAdFailedToShowFullScreenContent(AdError adError) {
-
+                                    WritableMap event = Arguments.createMap();
+                                    event.putString("message", adError.getMessage());
+                                    sendEvent(EVENT_AD_FAILED_TO_OPEN, event);
                                 }
 
                                 @Override
                                 public void onAdShowedFullScreenContent() {
+                                    sendEvent(EVENT_AD_OPENED, null);
                                     mInterstitialAd = null;
                                 }
                             });
